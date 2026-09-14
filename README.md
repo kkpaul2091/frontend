@@ -162,4 +162,4 @@ The frontend is deployed as `pharma-ui` via the shared Helm chart in `zen-gitops
 Ingress routes `/` to the `pharma-ui` service. All `/api/*` requests are routed by Nginx to the backend api-gateway.
 
 See [`zen-infra/docs/FULL-DEPLOYMENT-GUIDE.md`](https://github.com/your-github-username/zen-infra/blob/main/docs/FULL-DEPLOYMENT-GUIDE.md) for the complete 4-stage deployment guide.
-# frontend
+
