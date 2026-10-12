@@ -66,7 +66,7 @@ def delete_student(student_id):
 
 
 if __name__ == '__main__': 
-    app.run(host='0.0.0.0', debug=True,port=8002) 
+    app.run(host='0.0.0.0', debug=False,port=8002) 
 
 ''' 
  app.run(host='0.0.0.0', debug=False,port=3000) 
