@@ -80,7 +80,8 @@ jobs:
 
       - name: Run Ruff lint
         run: ruff check .
-
+      - name: Format code
+        run: ruff format .
       - name: Check Python formatting
         run: ruff format --check .
 
