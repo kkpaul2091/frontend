@@ -3,13 +3,20 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from bson.objectid import ObjectId
 import os
-
-
   
 app = Flask(__name__) 
   
-# MongoDB connection setup 
-uri = os.environ["MONGODB_URI"]
+# MongoDB connection setup
+username = os.environ["MONGODB_USERNAME"]
+password = os.environ["MONGODB_PASSWORD"]
+db_name = os.environ["MONGODB_DB_NAME"]
+host = os.environ["MONGODB_HOST"]
+app_name = os.environ["MONGODB_APP_NAME"]
+
+uri = (
+    f"mongodb+srv://{username}:{password}"
+    f"@{host}/?retryWrites=true&w=majority&appName={app_name}"
+) 
 
 
 # Create a new client and connect to the server
