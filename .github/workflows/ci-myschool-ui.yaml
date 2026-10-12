@@ -113,7 +113,14 @@ jobs:
 
           pip install pytest pytest-cov
 
-      - name: Run unit tests with coverage
+      - name: Run unit tests with coverage  
+        env:
+            MONGODB_USERNAME: test
+            MONGODB_PASSWORD: test
+            MONGODB_HOST: test
+            MONGODB_DB_NAME: test
+            MONGODB_APP_NAME: test
+        
         run: |
           pytest \
             --cov=. \
