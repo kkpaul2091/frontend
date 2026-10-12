@@ -145,7 +145,7 @@ jobs:
   security:
     name: Python Security
     runs-on: ubuntu-latest
-    #needs: test
+    needs: lint
 
     steps:
       - name: Checkout repository
