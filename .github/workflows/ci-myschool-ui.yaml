@@ -372,7 +372,7 @@ jobs:
           fi
 
           git commit \
-            -m "ci(dev): update pharma-api to ${IMAGE_TAG}"
+            -m "ci(dev): update myschool-api to ${IMAGE_TAG}"
 
           git push
 
