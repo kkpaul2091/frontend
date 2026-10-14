@@ -318,33 +318,44 @@ jobs:
           echo "${IMAGE_URI}:${IMAGE_TAG}"
 
   # ── 6. Deploy to DEV through GitOps ───────────────────────────────────────
-#   deploy-dev:
-#     name: Deploy - DEV
-#     runs-on: ubuntu-latest
-#     needs: docker-build-push
-#     environment: dev
+  deploy-dev:
+    name: Deploy - DEV
+    runs-on: ubuntu-latest
+    needs: docker-build-push
+    environment: dev
 
-#     steps:
-#       - name: Checkout application repository
-#         uses: actions/checkout@v5
+    steps:
+      - name: Checkout application repository
+        uses: actions/checkout@v5
 
-#       - name: Checkout GitOps repository
-#         uses: actions/checkout@v5
-#         with:
-#           repository: ${{ env.GITOPS_REPO }}
-#           token: ${{ secrets.GITOPS_TOKEN }}
-#           path: _gitops
+      - name: Checkout GitOps repository
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          token: ${{ secrets.GITOPS_TOKEN }}
+          path: _gitops
 
-#       - name: Install yq
-#         run: |
-#           sudo wget \
-#             --quiet \
-#             --output-document=/usr/local/bin/yq \
-#             "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64"
+      - name: Install yq
+        run: |
+          sudo wget \
+            --quiet \
+            --output-document=/usr/local/bin/yq \
+            "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64"
 
-#           sudo chmod +x /usr/local/bin/yq
-#           yq --version
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
+      - name: Update image tag only
+        env:
+          IMAGE_TAG: ${{ needs.docker-build-push.outputs.image_tag }}
+          DEPLOYMENT_FILE: _gitops/k8s/myschool/dev/gke-myschool-app.yaml
+        run: |
+          yq eval '
+            .spec.template.spec.containers[0].image |=
+            sub(":.*$"; ":" + strenv(IMAGE_TAG))
+          ' --inplace "${DEPLOYMENT_FILE}"
 
+          yq eval '.spec.template.spec.containers[0].image' "${DEPLOYMENT_FILE}"
+          
 #       - name: Update DEV image repository and tag
 #         env:
 #           IMAGE_URI: ${{ needs.docker-build-push.outputs.image_uri }}
