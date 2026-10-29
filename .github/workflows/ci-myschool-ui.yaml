@@ -366,15 +366,21 @@ jobs:
 
           git add k8s/myschool/dev/gke-myschool-app.yaml
 
+          # if git diff --staged --quiet; then
+          #   echo "GitOps repository is already up to date"
+          #   exit 0
+          # fi
           if git diff --staged --quiet; then
-            echo "GitOps repository is already up to date"
-            exit 0
+              echo "Image tag is already ${IMAGE_TAG}. Nothing to commit."
+          else
+            git commit -m "Update myschool-ui image tag to ${IMAGE_TAG}"
+            git push
           fi
 
-          git commit \
-            -m "ci(dev): update myschool-api to ${IMAGE_TAG}"
+          # git commit \
+          #   -m "ci(dev): update myschool-api to ${IMAGE_TAG}"
 
-          git push
+          # git push
 
 
 #       - name: Update DEV image repository and tag
